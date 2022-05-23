@@ -28,9 +28,8 @@ const EditExercise = () => {
 	useEffect(() => {
 		const fetchExercise = async () => {
 			const res = await axios.get('http://localhost:5000/exercises/'+id);
-			console.log("res.data.username: ", res.data.username);
+			console.log("res.data: ", res.data);
 			setForm({ ...form, username: res.data.username });
-			console.log("state: ", form);
 		}
 
 		if(didLogRef.current == false) {
@@ -46,15 +45,16 @@ const EditExercise = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// do something
-		const exercise = {
-			username: form.username,
-			description: form.description,
-			duration: form.duration,
-			date: startDate,
-		}
-		console.log("new exercise: ", exercise);
-		const res = await axios.put('http://localhost:5000/exercises/'+id, exercise);
-		console.log(res.data);
+//		const exercise = {
+//			username: form.username,
+//			description: form.description,
+//			duration: form.duration,
+//			date: startDate,
+//		}
+		setForm({ ...form, description: form.description, duration: form.duration, date: form.date});
+		console.log("new exercise: ", form);
+		const res = await axios.put('http://localhost:5000/exercises/'+id, form);
+		// console.log(res.data);
 		
 		window.location = '/';
 	}
