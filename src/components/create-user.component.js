@@ -1,57 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default class CreateUser extends React.Component {
-	constructor (props) {
-		super(props);
+const CreateUser = () => {
+	const [form, setForm] = useState({
+		username: ''
+	});
 
-		this.state = {
-			username: '',
-		}
-	}
+	useEffect(() => {
 
-	onChangeUsername = (e) => {
-		this.setState({
-			username: e.target.value
-		});
-	}
+	}, []);
 
-	onSubmit = (e) => {
+	const handleChange = (input) => e => {
+		setForm({...form, [input] : e.target.value });
+	};
+
+	const handleSubmit = async(e) => {
 		e.preventDefault();
-
-		const user = {
-			username: this.state.username,
-		}
-		console.log(user);
-
-		// POST: API server
-		axios.post('http://localhost:5000/users/add', user)
-			.then(res => console.log(res.data));
-
-		this.setState({
-			username: ''
-		});
+		setForm({ ...form, username: form.username });
+		console.log("new username: ", form.username);
+		const res = await axios.post('http://localhost:5000/users/add', form);
+		console.log("res.data: ", res.data);
+		// catch
 	}
 
-	render () {
-		return (
-			<div>
-				<h3>Create New User</h3>
-				<form onSubmit={this.onSubmit}>
-					<div className='form-group'>
-						<label>Username: </label>
-						<input type="text"
-							required
-							className='form-control'
-							value={this.state.username}
-							onChange={this.onChangeUsername}
-							/>
-					</div>
-					<div className='form-group'>
-						<input type="submit" value="Create User" className='btn btn-primary' />
-					</div>
-				</form>
-			</div>
-		)
-	}
+	return (
+		<div>
+			<h3>Create New User</h3>
+			<form onSubmit={handleSubmit}>
+				<div className='form-group'>
+					<label>Username: </label>
+					<input required className='form-control' type='text' value={form.username} onChange={handleChange('username')} />
+				</div>
+
+				<div className='form-group'>
+					<input type='submit' value='Register' />
+				</div>
+			</form>
+		</div>
+	)
 }
+
+export default CreateUser;

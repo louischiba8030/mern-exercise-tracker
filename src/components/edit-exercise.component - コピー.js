@@ -44,7 +44,13 @@ const EditExercise = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-
+		// do something
+//		const exercise = {
+//			username: form.username,
+//			description: form.description,
+//			duration: form.duration,
+//			date: startDate,
+//		}
 		setForm({ ...form, description: form.description, duration: form.duration, date: form.date});
 		console.log("new exercise: ", form);
 		const res = await axios.put('http://localhost:5000/exercises/'+id, form);
